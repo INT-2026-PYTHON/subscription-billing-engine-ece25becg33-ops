@@ -42,23 +42,50 @@ class ScriptedGateway(PaymentGateway):
 
     def __init__(self, results: list[PaymentResult]) -> None:
         # TODO Day 3
-        raise NotImplementedError("Day 3: implement ScriptedGateway.__init__")
+        self.result=list(result)
 
     def charge(self, invoice: Invoice) -> PaymentResult:
         # TODO Day 3
-        raise NotImplementedError("Day 3: implement ScriptedGateway.charge")
+        if not self.results:
+            raise RuntimeError(
+                "ScriptedGateway ran out of scripted results"
+            )
+
+        return self.results.pop(0)
 
 
 # ----------------------------------------------------------------
 # Fake-random — for the CLI demo
 # ----------------------------------------------------------------
-class FakeRandomGateway(PaymentGateway):
-    """Succeeds at a configurable rate; seeded for reproducibility."""
+       class FakeRandomGateway(PaymentGateway):
+    """
+    Simulates payment success/failure.
+    """
 
-    def __init__(self, success_rate: float = 0.7, seed: Optional[int] = None) -> None:
-        # TODO Day 3
-        raise NotImplementedError("Day 3: implement FakeRandomGateway.__init__")
+    def __init__(
+        self,
+        success_rate: float = 0.7,
+        seed: Optional[int] = None,
+    ) -> None:
+         # TODO Day 3
+
+        if not 0 <= success_rate <= 1:
+            raise ValueError(
+                "success_rate must be between 0 and 1"
+            )
+
+        self.success_rate = success_rate
+        self.random = random.Random(seed)
 
     def charge(self, invoice: Invoice) -> PaymentResult:
-        # TODO Day 3
-        raise NotImplementedError("Day 3: implement FakeRandomGateway.charge")
+         # TODO Day 3
+        success = (
+            self.random.random() < self.success_rate
+        )
+
+        if success:
+            return PaymentResult(True)
+
+        return PaymentResult(
+            False,
+            "PAYMENT_DECLINED" 
