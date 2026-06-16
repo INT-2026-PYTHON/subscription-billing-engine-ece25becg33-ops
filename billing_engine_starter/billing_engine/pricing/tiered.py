@@ -33,10 +33,31 @@ class Tier:
 class TieredPricing(PricingStrategy):
     """Charges across multiple price tiers based on cumulative quantity."""
 
+
     def __init__(self, tiers: list[Tier]) -> None:
-        # TODO Day 1
-        raise NotImplementedError("Day 1: implement TieredPricing.__init__")
+        #TODO DAY 1
+        if not tiers:
+            raise ValueError("At least one tier required")
+
+        self.tiers = sorted(tiers, key=lambda t: t.from_units)
 
     def calculate(self, quantity: int) -> Money:
-        # TODO Day 1
-        raise NotImplementedError("Day 1: implement TieredPricing.calculate")
+        #TODO DAY 1
+        if quantity < 0:
+            raise ValueError("Quantity cannot be negative")
+
+        currency = self.tiers[0].unit_price.currency
+        total = Money.zero(currency)
+
+        for tier in self.tiers:
+            if quantity <= tier.from_units:
+                break
+
+            upper = tier.to_units if tier.to_units is not None else quantity
+
+            units_in_tier = min(quantity, upper) - tier.from_units
+
+            if units_in_tier > 0:
+                total += tier.unit_price * units_in_tier
+
+        return total 
