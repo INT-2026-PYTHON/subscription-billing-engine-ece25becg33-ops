@@ -12,11 +12,11 @@ class UsageBased(PricingStrategy):
     """Charges `unit_price * quantity`."""
 
     def __init__(self, unit_price: Money) -> None:
-        # TODO Day 1
+        
         self.unit_price=unit_price
 
     def calculate(self, quantity: int) -> Money:
-        # TODO Day 1
+        
         if quantity < 0:
             raise ValueError("Quantity cannot be negative")
 
