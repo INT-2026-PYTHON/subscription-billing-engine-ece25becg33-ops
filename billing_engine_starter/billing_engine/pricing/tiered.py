@@ -35,14 +35,14 @@ class TieredPricing(PricingStrategy):
 
 
     def __init__(self, tiers: list[Tier]) -> None:
-        #TODO DAY 1
+        
         if not tiers:
             raise ValueError("At least one tier required")
 
         self.tiers = sorted(tiers, key=lambda t: t.from_units)
 
     def calculate(self, quantity: int) -> Money:
-        #TODO DAY 1
+        
         if quantity < 0:
             raise ValueError("Quantity cannot be negative")
 
