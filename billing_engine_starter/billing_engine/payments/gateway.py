@@ -42,17 +42,11 @@ class ScriptedGateway(PaymentGateway):
 
     def __init__(self, results: list[PaymentResult]) -> None:
         
-        self.result=list(result)
+       
 
     def charge(self, invoice: Invoice) -> PaymentResult:
         
-        if not self.results:
-            raise RuntimeError(
-                "ScriptedGateway ran out of scripted results"
-            )
-
-        return self.results.pop(0)
-
+        
 
 # ----------------------------------------------------------------
 # Fake-random — for the CLI demo
@@ -68,24 +62,6 @@ class ScriptedGateway(PaymentGateway):
         seed: Optional[int] = None,
     ) -> None:
         
-
-        if not 0 <= success_rate <= 1:
-            raise ValueError(
-                "success_rate must be between 0 and 1"
-            )
-
-        self.success_rate = success_rate
-        self.random = random.Random(seed)
-
     def charge(self, invoice: Invoice) -> PaymentResult:
         
-        success = (
-            self.random.random() < self.success_rate
-        )
-
-        if success:
-            return PaymentResult(True)
-
-        return PaymentResult(
-            False,
-            "PAYMENT_DECLINED" 
+       
