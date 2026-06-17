@@ -827,13 +827,28 @@ class LedgerRepository:
         class PaymentAttemptRepository:
     def __init__(self, db: Database) -> None:
         self.db = db
-
-    def add(
-        self,
-        invoice_id: int,
-        attempt_no: int,
-        status: str,
-        failure_reason: Optional[str],
-        next_retry_at: Optional[datetime],
-    ) -> int:
-        
+     def add(
+    self,
+    invoice_id: int,
+    attempt_no: int,
+    status: str,
+    failure_reason: Optional[str],
+    next_retry_at: Optional[datetime],
+) -> int:
+    with self.db.connect() as conn:
+        cur = conn.execute(
+            """
+            INSERT INTO payment_attempts
+            (invoice_id, attempt_no, status, failure_reason, next_retry_at)
+            VALUES (?, ?, ?, ?, ?)
+            """,
+            (
+                invoice_id,
+                attempt_no,
+                status,
+                failure_reason,
+                next_retry_at.isoformat() if next_retry_at else None,
+            ),
+        )
+        conn.commit()
+        return cur.lastrowid   
