@@ -30,38 +30,28 @@ class PaymentGateway(ABC):
 # Scripted — for deterministic tests
 # ----------------------------------------------------------------
 class ScriptedGateway(PaymentGateway):
-    """Returns pre-set results from a queue. Used in tests.
-
-    Example:
-        gateway = ScriptedGateway([
-            PaymentResult(False, "INSUFFICIENT_FUNDS"),
-            PaymentResult(False, "INSUFFICIENT_FUNDS"),
-            PaymentResult(True),
-        ])
-    """
-
     def __init__(self, results: list[PaymentResult]) -> None:
-        
-       
+        self.results = results
 
     def charge(self, invoice: Invoice) -> PaymentResult:
-        
-        
+        if not self.results:
+            return PaymentResult(False, "NO_MORE_RESULTS")
+        return self.results.pop(0)
 
+    
 # ----------------------------------------------------------------
 # Fake-random — for the CLI demo
 # ----------------------------------------------------------------
-       class FakeRandomGateway(PaymentGateway):
-    """
-    Simulates payment success/failure.
-    """
+       import random
 
-    def __init__(
-        self,
-        success_rate: float = 0.7,
-        seed: Optional[int] = None,
-    ) -> None:
-        
+class FakeRandomGateway(PaymentGateway):
+    def __init__(self, success_rate: float = 0.7, seed: Optional[int] = None) -> None:
+        self.success_rate = success_rate
+        self.random = random.Random(seed)
+
     def charge(self, invoice: Invoice) -> PaymentResult:
+        if self.random.random() < self.success_rate:
+            return PaymentResult(True)
+        return PaymentResult(False, "PAYMENT_FAILED")
         
        
