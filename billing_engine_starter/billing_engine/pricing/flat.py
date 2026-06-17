@@ -12,9 +12,9 @@ class FlatRate(PricingStrategy):
     """Charges a fixed amount every billing period."""
 
     def __init__(self, amount: Money) -> None:
-        # TODO Day 1
+        
         self.amount=amount
 
     def calculate(self, quantity: int) -> Money:
-        # TODO Day 1
+        
         return self.amount
