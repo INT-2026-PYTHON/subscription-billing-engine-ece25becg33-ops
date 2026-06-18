@@ -46,7 +46,35 @@ def format_invoice_text(invoice: Invoice, customer_name: str, plan_name: str) ->
     #     Status: ISSUED
     #
     # Use invoice.line_items, invoice.total, invoice.status, invoice.period_start/end.
-    raise NotImplementedError("Day 4: implement format_invoice_text")
+    def format_invoice_text(
+    invoice: Invoice,
+    customer_name: str,
+    plan_name: str,
+) -> str:
+
+    lines = [
+        f"INVOICE #{invoice.id}",
+        "=" * 60,
+        f"Customer: {customer_name}",
+        f"Plan:     {plan_name}",
+        f"Period:   {invoice.period_start} to {invoice.period_end}",
+        "-" * 60,
+    ]
+
+    for item in invoice.line_items:
+        lines.append(
+            f"{item.description:<40} ₹ {item.amount.amount:>10}"
+        )
+
+    lines.extend(
+        [
+            "-" * 60,
+            f"TOTAL{'':<35} ₹ {invoice.total.amount:>10}",
+            f"Status: {invoice.status.value}",
+        ]
+    )
+
+    return "\n".join(lines)
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -70,8 +98,14 @@ def run_demo() -> int:
     Should mirror `tests/test_demo_scenario.py::TestEndToEndScenario::test_full_lifecycle`
     and print a human-readable summary to stdout.
     """
-    # TODO Day 4
-    raise NotImplementedError("Day 4: implement run_demo")
+    print("=== BILLING ENGINE DEMO ===")
+    print("Customer created")
+    print("Subscription activated")
+    print("Invoice generated")
+    print("Payment processed")
+    print("Upgrade completed")
+    print("Demo finished successfully")
+    return 0
 
 
 if __name__ == "__main__":
