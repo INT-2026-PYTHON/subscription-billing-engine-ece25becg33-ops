@@ -681,8 +681,7 @@ class InvoiceRepository:
                 (InvoiceStatus.FAILED.value, invoice_id),
             )
 
-   
-    def set_pdf_path(self, invoice_id: int, path: str) -> None:
+
         def set_pdf_path(self, invoice_id: int, path: str) -> None:
         with self.db.connect() as conn:
             conn.execute(
@@ -840,7 +839,7 @@ class LedgerRepository:
 # ============================================================
 # PAYMENT ATTEMPTS
 # ============================================================
-        class PaymentAttemptRepository:
+class PaymentAttemptRepository:
     def __init__(self, db: Database) -> None:
         self.db = db
        
