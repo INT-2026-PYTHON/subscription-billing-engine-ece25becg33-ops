@@ -283,7 +283,7 @@ def list_for_plan(
 # DISCOUNTS
 # ============================================================
 class DiscountRepository:
-def init(self, db: Database) -> None:
+def ___init__(self, db: Database) -> None:
 self.db = db
 def add(
     self,
@@ -336,6 +336,7 @@ def get_by_code(self, code: str) -> Optional[dict]:
 class SubscriptionRepository:
     def __init__(self, db: Database) -> None:
         self.db = db
+       
     def add(self, subscription: Subscription) -> Subscription:
        # TODO Day 2.
         with self.db.connect() as conn:
@@ -510,6 +511,7 @@ class SubscriptionRepository:
 class UsageRecordRepository:
     def __init__(self, db: Database) -> None:
         self.db = db
+       
     def add(
         self,
         subscription_id: int,
@@ -841,6 +843,7 @@ class LedgerRepository:
         class PaymentAttemptRepository:
     def __init__(self, db: Database) -> None:
         self.db = db
+       
      def add(
     self,
     invoice_id: int,
