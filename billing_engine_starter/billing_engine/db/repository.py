@@ -494,11 +494,16 @@ class SubscriptionRepository:
                 ),
             )
     def update_plan(self, subscription_id: int, new_plan_id: int) -> None:
-        """Switch the subscription to a different plan (used by upgrade flow)."""
-        # TODO Day 4.
-        raise NotImplementedError("Day 4: implement SubscriptionRepository.update_plan")
-
-
+       
+        with self.db.connect() as conn:
+            conn.execute(
+                """
+                UPDATE subscriptions
+                SET plan_id=?
+                WHERE id=?
+                """,
+                (new_plan_id, subscription_id),
+            )
 # ============================================================
 # USAGE
 # ============================================================
@@ -676,8 +681,17 @@ class InvoiceRepository:
 
    
     def set_pdf_path(self, invoice_id: int, path: str) -> None:
-        # TODO Day 4.
-        raise NotImplementedError("Day 4: implement InvoiceRepository.set_pdf_path")
+        def set_pdf_path(self, invoice_id: int, path: str) -> None:
+        with self.db.connect() as conn:
+            conn.execute(
+                """
+                UPDATE invoices
+                SET pdf_path=?
+                WHERE id=?
+                """,
+                (path, invoice_id),
+            )
+      
 
 
 class InvoiceLineItemRepository:
